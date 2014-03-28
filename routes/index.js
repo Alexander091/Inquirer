@@ -1,19 +1,28 @@
-var fs = require('fs');
+
 var resultRep = require("./../repository/result");
-var fileName = 'content.json';
 
 /*
  * GET home page.
  */
 
 exports.index = function(req, res){
-    var callback = function(err, data){
-        var content = JSON.parse(data);
-        res.render('index', { content: content });
+    var messages = resultRep.getMessages();
+    var callback = function(data){
+        res.render('index', { content: data, extend: false, messages:messages});
     };
-
-    fs.readFile(fileName,callback);
+    resultRep.getContent(callback);
+//    fs.readFile(fileName,callback);
 };
+
+exports.indexExtends = function(req,res){
+    var messages = resultRep.getMessages();
+    var callback = function(data){
+        res.render('index', { content: data, extend: true, messages:messages});
+    };
+    resultRep.getContent(callback);
+//    fs.readFile(fileName,callback);
+};
+
 exports.result = function(req,res){
     console.log(req.body);
     console.log(req.ip);
@@ -23,4 +32,11 @@ exports.result = function(req,res){
     };
     resultRep.addResult(req.ip, result);
     res.send({result:resultRep.getStatistics(result.question)});
+};
+
+exports.sendMessage = function(req, res){
+    console.log(req.body);
+    res.send(req.body);
+
+    resultRep.saveMessage(req.body);
 };

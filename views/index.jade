@@ -8,27 +8,37 @@ block content
             blockquote.pull-right
                 p Лучший способ приободриться - подбодрить кого-нибудь другого.
                 small Марк Твен
+        if extend
+            include extend
         .row
-            h1 Кто Вы?
-            select#usersSelect.image-picker.show-html.show-labels.masonry
-                option(value="")
-                option(value="1", data-img-src="/images/people/Alex.jpg") Сашка-очаровашка
-                option(value="2", data-img-src="/images/people/Dmit.jpg") Качок
-                option(value="3", data-img-src="/images/people/Gleb.jpg") Новичок
-                option(value="4", data-img-src="/images/people/Julia.jpg", data-name="julia") Милашка
-                option(value="5", data-img-src="/images/people/Nastia.jpg", data-name="nastia") Настюлька-красотулька
-        .row
-            .form-actions#questionForm
-                each question in content.questions
-                    h1= question.value
-                    each option in question.options
-                        label.radio
-                            input(type='radio', name='#{question.name}', value='#{option.id}')
-                            span= option.text
-                            .progress.progress-striped.active(style="position:relative")
-                                .bar(style="width: 0%")
-                                span.textProgress 0
-                button(type='submit', disabled='disabled').btn.btn-primary#submitButton Проголосовать
+            .row-fluid
+                .span8
+                    table.table.table-striped.table-bordered#messageTable
+                        caption
+                            h4 Все нижеподписавшиеся надеются на твоё скорейшее выздоровление!
+                        thead(style="")
+                            tr
+                                th
+                                    strong Пожелания
+                                th
+                                    strong Подпись
+                        tbody
+                            each message in messages
+                                tr
+                                    th= message.message
+                                    th= message.author
+                .span4
+                    form.form-actions.form-horizontal(method="post", action="javascript:void(null);", onsubmit="submitMessageForm()")#messageForm
+                        fieldset
+                            legend Напиши и отправь пожелание
+                            .control-group.has-error
+                                textarea(rows="3", placeholder="Идеальное место для милого пожелания",required="required", name="message").span12
+                            .control-group.has-error
+                                input(type="text", placeholder="Кто ты, добрый человек?", required="required", name="author").span12
+                            .control-group
+                                .controls
+                                    input(type="submit", value="Отправить").btn.btn-primary.pull-right#submitMessage
+
 
 block scripts
     script(src='/image-picker/image-picker.min.js')

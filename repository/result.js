@@ -3,15 +3,25 @@
  */
 var _ = require("underscore");
 var fs = require("fs");
-var fileName = "result.json";
+var fileNameResul = "result.json";
+var fileNameMessages = "messages.json";
+var fileNameContent = 'content.json';
 var results=[];
+var messages = [];
 
-fs.readFile(fileName,function(err, data){
+fs.readFile(fileNameResul,function(err, data){
     if(err){
         return;
     }
     results = JSON.parse(data);
     console.log(results);
+});
+fs.readFile(fileNameMessages, function(err, data){
+    if(err){
+        return;
+    }
+    messages = JSON.parse(data);
+    console.log(messages);
 });
 
 exports.addResult = function(ip, result){
@@ -26,7 +36,7 @@ exports.addResult = function(ip, result){
     }else{
         results.push({name:result.question, result:[{ip:ip, option:result.option}]});
     }
-    saveToFile(results);
+    saveToFile(results, fileNameResul);
     console.log(results);
 }
 
@@ -86,12 +96,42 @@ exports.getStatistics = function(questinName){
     return null;
 }
 
-function saveToFile(json){
+function saveToFile(json , fileName){
     fs.writeFile(fileName, JSON.stringify(json, null, 4), function(err) {
         if(err) {
             console.log(err);
         } else {
-            console.log("JSON saved to ");
+            console.log("JSON saved to " + fileName);
         }
     });
 }
+
+exports.saveMessage = function(message){
+    messages.push(message);
+    saveToFile(messages, fileNameMessages);
+};
+exports.getMessages = function (){
+    return messages;
+};
+
+exports.getContent = function (callback){
+    fs.readFile(fileNameContent,function(err, data){
+        var content = JSON.parse(data);
+
+        _.each(content.questions, function(element){
+            var localResults = _.where(results, {name:element.name});
+            element.total = localResults[0].result.length;
+
+            _.each(element.options,function(option){
+                if(element.total!=0){
+                    option.votes = _.where(localResults[0].result,{option:option.id}).length;
+                }
+                else
+                    option.votes = 0;
+
+            });
+
+        });
+        callback(content);
+    });
+};

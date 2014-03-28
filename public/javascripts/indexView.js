@@ -44,3 +44,24 @@ $(document).ready(function(){
 //        return false; // avoid to execute the actual submit of the form.
     });
 });
+
+function insertMessage(data){
+    var tableBody = $('#messageTable tbody');
+    var str = "<tr> <th>"+data.message+"</th> <th>"+data.author+"</th>"+"</tr>>"
+    tableBody.append(str);
+}
+function submitMessageForm(){
+    var messageForm = $('#messageForm');
+    var data = messageForm.serialize();
+    $.ajax({
+        type: "POST",
+        url: "/sendMessage",
+        data: data,
+        success: function(result){
+            messageForm.each(function(){
+                this.reset();
+            });
+            insertMessage(result);
+        }
+    });
+}

@@ -17,3 +17,12 @@ body{
     display: block;
     position: absolute;
 }
+thead th {
+    background-color: #656565;
+    font-weight: normal;
+    font-size: 15px;
+    padding: 0 10px;
+    color: #fff;
+    text-shadow:#414141 0 1px 0px;
+    line-height: 40px;
+}

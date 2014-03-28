@@ -28,7 +28,9 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/extends', routes.indexExtends);
 app.post('/result',routes.result);
+app.post('/sendMessage',routes.sendMessage);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

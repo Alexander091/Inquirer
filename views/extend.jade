@@ -1,0 +1,25 @@
+//
+   Created by Alexander on 28.03.14.
+
+.row
+    h1 Кто Вы?
+    select#usersSelect.image-picker.show-html.show-labels.masonry
+        option(value="")
+        option(value="1", data-img-src="/images/people/Alex.jpg") Сашка-очаровашка
+        option(value="2", data-img-src="/images/people/Dmit.jpg") Качок
+        option(value="3", data-img-src="/images/people/Gleb.jpg") Новичок
+        option(value="4", data-img-src="/images/people/Julia.jpg", data-name="julia") Милашка
+        option(value="5", data-img-src="/images/people/Nastia.jpg", data-name="nastia") Настюлька-красотулька
+.row
+    .form-actions#questionForm
+        each question in content.questions
+            h1= question.value
+            each option in question.options
+                label.radio
+                    input(type='radio', name='#{question.name}', value='#{option.id}')
+                    span= option.text
+                    .progress.progress-striped.active(style="position:relative")
+
+                        .bar(style="width: #{(option.votes/question.total)*100}%")
+                        span.textProgress #{option.votes}
+        button(type='submit', disabled='disabled').btn.btn-primary#submitButton Проголосовать
