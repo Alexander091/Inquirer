@@ -1,0 +1,19 @@
+.head-block{
+    height:150px;
+    background: url('/images/headerBlock.jpg') center center no-repeat;
+    background-size:cover;
+}
+body{
+    background: url('/images/background.jpg');
+    background-size:cover;
+}
+#questionForm{
+    display: none;
+}
+.textProgress{
+    text-align: center;
+    width: 100%;
+    z-index: 2;
+    display: block;
+    position: absolute;
+}
