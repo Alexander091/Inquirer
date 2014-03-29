@@ -24,19 +24,22 @@ exports.indexExtends = function(req,res){
 };
 
 exports.result = function(req,res){
-    console.log(req.body);
-    console.log(req.ip);
+    var ipAddr = req.headers["x-forwarded-for"];
+    if (ipAddr){
+        var list = ipAddr.split(",");
+        ipAddr = list[list.length-1];
+    } else {
+        ipAddr = req.connection.remoteAddress;
+    }
     var result={
         option: req.body.option,
         question: req.body.question
     };
-    resultRep.addResult(req.ip, result);
+    resultRep.addResult(ipAddr, result);
     res.send({result:resultRep.getStatistics(result.question)});
 };
 
 exports.sendMessage = function(req, res){
-    console.log(req.body);
     res.send(req.body);
-
     resultRep.saveMessage(req.body);
 };

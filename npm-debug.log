@@ -23,7 +23,7 @@
 8 error     <http://github.com/isaacs/npm/issues>
 9 error System Windows_NT 6.1.7601
 10 error command "C:\\Program Files (x86)\\nodejs\\\\node.exe" "C:\\Program Files (x86)\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "init"
-11 error cwd D:\Drive\Dropbox\MyProject\Inquirer
+11 error cwd D:\Drive\Dropbox\MyProject\Inquirer1
 12 error node -v v0.10.24
 13 error npm -v 1.3.21
 14 verbose exit [ 1, true ]

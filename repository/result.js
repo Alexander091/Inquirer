@@ -14,14 +14,12 @@ fs.readFile(fileNameResul,function(err, data){
         return;
     }
     results = JSON.parse(data);
-    console.log(results);
 });
 fs.readFile(fileNameMessages, function(err, data){
     if(err){
         return;
     }
     messages = JSON.parse(data);
-    console.log(messages);
 });
 
 exports.addResult = function(ip, result){
@@ -37,15 +35,10 @@ exports.addResult = function(ip, result){
         results.push({name:result.question, result:[{ip:ip, option:result.option}]});
     }
     saveToFile(results, fileNameResul);
-    console.log(results);
-}
+};
 
 function hasQuestion(questinName){
-    if(getQuestion(questinName) == null){
-        return false;
-    }else{
-        return true;
-    }
+    return getQuestion(questinName) != null;
 }
 
 function getQuestion(questinName){
@@ -67,41 +60,36 @@ function getRespondentByIP(question, ip){
         }
     }
     return null;
-};
-
+}
 function hasIP(question, ip){
-    if(getRespondentByIP(question, ip)==null){
-        return false;
-    }
-    return true;
-};
+    return getRespondentByIP(question, ip) != null;
 
-exports.getStatistics = function(questinName){
-    var findCountOption = function(result, option){
-        return _.where(result, {option:option}).length
-    }
+}
+exports.getStatistics = function (questinName) {
+    var findCountOption = function (result, option) {
+        return _.where(result, {option: option}).length
+    };
     var question = getQuestion(questinName);
-    if(question!=null){
-        var statistics={
-            total:question.result.length,
-            option:[
+    if (question != null) {
+        return {
+            total: question.result.length,
+            option: [
                 findCountOption(question.result, '1'),
                 findCountOption(question.result, '2'),
                 findCountOption(question.result, '3')
             ]
         };
-        return statistics;
 
     }
     return null;
-}
+};
 
 function saveToFile(json , fileName){
     fs.writeFile(fileName, JSON.stringify(json, null, 4), function(err) {
         if(err) {
             console.log(err);
         } else {
-            console.log("JSON saved to " + fileName);
+            //console.log("JSON saved to " + fileName);
         }
     });
 }
@@ -120,7 +108,10 @@ exports.getContent = function (callback){
 
         _.each(content.questions, function(element){
             var localResults = _.where(results, {name:element.name});
-            element.total = localResults[0].result.length;
+            if(localResults.length>0)
+                element.total = localResults[0].result.length;
+            else
+                return;
 
             _.each(element.options,function(option){
                 if(element.total!=0){
